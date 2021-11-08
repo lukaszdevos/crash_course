@@ -1,3 +1,4 @@
 .idea
 .git
 __pychace__/
+.env
