@@ -9,4 +9,3 @@ class UserTest(TestCase):
 
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)
-
