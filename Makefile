@@ -1,5 +1,3 @@
-path =.
-
 start-local:
 	docker-compose up -d
 
