@@ -4,3 +4,4 @@ RUN mkdir /app
 COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app/backend
 RUN pip install -r /app/requirements.txt
+ENV DJANGO_SETTINGS_MODULE crashcourse.settings
