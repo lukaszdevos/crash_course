@@ -2,6 +2,7 @@ from unittest import TestCase
 
 import pytest
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APIClient
 
 from users.tests.user_factories import UserDictFactory
@@ -16,12 +17,30 @@ class UserTest(TestCase):
     def test_user_create(self):
         self._given_user_has_been_created()
 
-        self.assertEqual(self.response.status_code, 201)
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
-    def _given_user_has_been_created(self):
-        self.data = UserDictFactory.build()
+    def _given_user_has_been_created(self, **kwargs):
+        self.data = UserDictFactory.build(**kwargs)
         url = reverse("users:register")
         self.given_post_response_endpoint(url, self.data)
 
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)
+
+    def test_user_not_create_when_has_not_valid_email(self):
+        wrong_email = "wrong_mail.com"
+        self._given_user_has_been_created(email=wrong_email)
+
+        expected_result = ["Enter a valid email address."]
+
+        self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(self.response.json()["email"], expected_result)
+
+    def test_user_not_create_when_has_not_valid_password(self):
+        short_password = "short"
+        self._given_user_has_been_created(password=short_password)
+
+        expected_result = ['This password is too short. It must contain at least 8 characters.']
+
+        self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(self.response.json()["password"], expected_result)
