@@ -1,7 +1,7 @@
 from unittest import TestCase
-from django.urls import reverse
-import pytest
 
+import pytest
+from django.urls import reverse
 from rest_framework.test import APIClient
 
 pytestmark = pytest.mark.django_db
