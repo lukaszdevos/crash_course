@@ -23,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
 def create_token(user):
     token = UserToken(user=user)
     token.save()
