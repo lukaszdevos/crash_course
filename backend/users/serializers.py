@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from users.models import User
+from users.models import User, UserToken
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,3 +22,8 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
+
+def create_token(user):
+    token = UserToken(user=user)
+    token.save()
+    return token.token

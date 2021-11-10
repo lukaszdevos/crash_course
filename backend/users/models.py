@@ -1,3 +1,5 @@
+import secrets
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
@@ -11,7 +13,10 @@ class User(AbstractBaseUser):
 
 
 class UserToken(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE())
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        self.token = secrets.token_urlsafe()
+        return super().save(*args, **kwargs)
