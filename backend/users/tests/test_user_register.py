@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 import pytest
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from users.tests.user_factories import UserDictFactory
@@ -20,7 +19,7 @@ class UserTest(TestCase):
 
     def _given_user_has_been_created(self, **kwargs):
         self.data = UserDictFactory.build(**kwargs)
-        url = reverse("users:register")
+        url = "/users/register/"
         self.given_post_response_endpoint(url, self.data)
 
     def given_post_response_endpoint(self, url, data):
