@@ -22,9 +22,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
-
-
-def create_token(user):
-    token = UserToken(user=user)
-    token.save()
-    return token.token
