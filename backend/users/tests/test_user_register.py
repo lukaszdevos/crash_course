@@ -45,3 +45,12 @@ class UserTest(TestCase):
 
         self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(self.response.json()["password"], expected_result)
+
+    def test_user_create_validation_error_when_has_no_password(self):
+        short_password = ""
+        self._given_user_has_been_created(password=short_password)
+
+        expected_result = ["This field may not be blank."]
+
+        self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(self.response.json()["password"], expected_result)
