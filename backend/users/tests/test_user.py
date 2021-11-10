@@ -4,7 +4,6 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-
 from users.tests.user_factories import UserDictFactory
 
 pytestmark = pytest.mark.django_db
@@ -40,7 +39,9 @@ class UserTest(TestCase):
         short_password = "short"
         self._given_user_has_been_created(password=short_password)
 
-        expected_result = ['This password is too short. It must contain at least 8 characters.']
+        expected_result = [
+            "This password is too short. It must contain at least 8 characters."
+        ]
 
         self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(self.response.json()["password"], expected_result)
