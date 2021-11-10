@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "password",
+            "display_name",
         ]
 
     def create(self, validated_data):
