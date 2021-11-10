@@ -2,6 +2,8 @@ import secrets
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class User(AbstractBaseUser):
@@ -20,3 +22,9 @@ class UserToken(models.Model):
     def save(self, *args, **kwargs):
         self.token = secrets.token_urlsafe()
         return super().save(*args, **kwargs)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserToken.objects.create(user=instance)
