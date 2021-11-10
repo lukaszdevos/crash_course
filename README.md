@@ -17,3 +17,14 @@ POSTGRES_PASSWORD=postgres
 ```
 make start-local
 ```
+
+#### restart docker
+`make restart-local`
+#### stop docker
+`make stop-local`
+#### build docker
+`make build`
+
+### Other commands
+#### testing
+`make test`
