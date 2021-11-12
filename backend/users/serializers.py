@@ -25,4 +25,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     def _create_user_token(self, user):
         user_token = UserToken.objects.create(user=user)
-        print(user_token.token) # TODO delete after CC-408
+        print(user_token.token)  # TODO delete after CC-408
