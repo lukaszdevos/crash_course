@@ -16,6 +16,12 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = "email"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.pk:
+            user_token = UserToken.objects.create(user=self)
+            print(user_token.token)
+
 
 class UserTokenManager(models.Manager):
     def activate(self, token):
@@ -48,10 +54,3 @@ class UserToken(models.Model):
 
     def _get_expiration_time(self):
         return self.created_at + datetime.timedelta(hours=self.HOURS_TO_EXPIRED)
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        user_token = UserToken.objects.create(user=instance)
-        print(user_token)
