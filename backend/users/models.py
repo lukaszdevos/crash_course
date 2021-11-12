@@ -4,7 +4,7 @@ import secrets
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from django.utils import timezone
-from exceptions import TokenError
+from exceptions import TokenException
 
 
 class User(AbstractBaseUser):
@@ -19,9 +19,9 @@ class UserTokenManager(models.Manager):
     def activate(self, token):
         user_token = super().get_queryset().filter(token=token).first()
         if not user_token:
-            raise TokenError("Token verification is invalid.")
+            raise TokenException("Token verification is invalid.")
         if not user_token.is_valid_token():
-            raise TokenError("Token verification expired.")
+            raise TokenException("Token verification expired.")
         user = user_token.user
         user.is_active = True
         user.save()

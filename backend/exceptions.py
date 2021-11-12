@@ -1,2 +1,2 @@
-class TokenError(Exception):
+class TokenException(Exception):
     pass
