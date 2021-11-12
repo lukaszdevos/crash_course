@@ -27,7 +27,7 @@ class UserTokenManager(models.Manager):
         user.save()
 
 
-class UserToken(models.Model):
+class Activationtoken(models.Model):
     HOURS_TO_EXPIRED = 24
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="token")
