@@ -24,15 +24,13 @@ class User(AbstractBaseUser):
 class UserTokenManager(models.Manager):
     def activate(self, token):
         user_token = super().get_queryset().filter(token=token).first()
-        if user_token:
-            if user_token.is_valid_token():
-                user = user_token.user
-                user.is_active = True
-                user.save()
-            else:
-                raise TokenError("Token verification expired.")
-        else:
+        if not user_token:
             raise TokenError("Token verification is invalid.")
+        if not user_token.is_valid_token():
+            raise TokenError("Token verification expired.")
+        user = user_token.user
+        user.is_active = True
+        user.save()
 
 
 class UserToken(models.Model):
