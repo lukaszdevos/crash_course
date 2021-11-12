@@ -1,6 +1,6 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from users.models import UserToken
+from users.models import UserToken, TokenError
 from users.serializers import UserSerializer
 
 
@@ -13,14 +13,8 @@ class UserLoginView(RetrieveAPIView):
         token = request.GET.get("token")
         if token:
             try:
-                user_token = UserToken.objects.get(token=token)
-            except UserToken.DoesNotExist:
-                return Response({"message": "Token verification is invalid."})
-            if user_token.is_valid_token():
-                user = user_token.user
-                user.is_active = True
-                user.save()
+                UserToken.objects.activate(token=token)
                 return Response({"message": "Account confirmed."})
-            else:
-                return Response({"message": "Token verification expired."})
+            except TokenError as e:
+                return Response({"message": str(e)}, status=400)
         return Response({})

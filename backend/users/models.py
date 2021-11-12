@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
+from exceptions import TokenError
+
 
 class User(AbstractBaseUser):
     email = models.EmailField(blank=False, unique=True)
@@ -16,12 +18,27 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "email"
 
 
+class UserTokenManager(models.Manager):
+    def activate(self, token):
+        user_token = super().get_queryset().filter(token=token).first()
+        if user_token:
+            if user_token.is_valid_token():
+                user = user_token.user
+                user.is_active = True
+                user.save()
+            else:
+                raise TokenError("Token verification expired.")
+        else:
+            raise TokenError("Token verification is invalid.")
+
+
 class UserToken(models.Model):
     HOURS_TO_EXPIRED = 24
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="token")
     token = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
+    objects = UserTokenManager()
 
     def save(self, *args, **kwargs):
         self.token = secrets.token_urlsafe()
