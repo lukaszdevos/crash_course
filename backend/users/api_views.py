@@ -1,4 +1,4 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from users.models import TokenError, UserToken
 from users.serializers import UserSerializer
@@ -8,8 +8,8 @@ class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
 
 
-class UserLoginView(RetrieveAPIView):
-    def get(self, request, *args, **kwargs):
+class UserActivateView(CreateAPIView):
+    def post(self, request, *args, **kwargs):
         token = request.GET.get("token")
         if token:
             try:
