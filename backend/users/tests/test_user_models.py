@@ -2,7 +2,6 @@ import datetime
 
 import pytest
 from django.utils import timezone
-
 from users.tests.user_factories import UserFactory, UserTokenFactory
 
 pytestmark = pytest.mark.django_db
@@ -19,6 +18,7 @@ def test_user_token_is_valid(user):
     token = UserTokenFactory.build(user=user, created_at=time_delta)
 
     assert token.is_valid_token() == True
+
 
 def test_user_token_is_invalid(user):
     time_delta = timezone.now() - datetime.timedelta(hours=48)

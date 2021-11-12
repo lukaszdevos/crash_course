@@ -33,6 +33,7 @@ class UserToken(models.Model):
     def _get_expiration_time(self):
         return self.created_at + datetime.timedelta(hours=self.HOURS_TO_EXPIRED)
 
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

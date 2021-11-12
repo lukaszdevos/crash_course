@@ -1,6 +1,5 @@
 import factory
 from factory.fuzzy import FuzzyText
-
 from users.models import User, UserToken
 
 
