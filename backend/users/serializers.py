@@ -1,6 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from users.models import User
+from users.models import User, UserToken
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,4 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         user = super().create(validated_data)
         user.set_password(validated_data["password"])
         user.save()
+        user_token = UserToken.objects.create(user=user)
+        print(user_token.token)
         return user

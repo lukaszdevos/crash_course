@@ -14,12 +14,6 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = "email"
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.pk:
-            user_token = UserToken.objects.create(user=self)
-            print(user_token.token)
-
 
 class UserTokenManager(models.Manager):
     def activate(self, token):
