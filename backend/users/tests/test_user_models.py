@@ -7,7 +7,7 @@ from users.tests.user_factories import UserFactory, UserTokenFactory
 pytestmark = pytest.mark.django_db
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def user():
     user = UserFactory.build()
     return user
