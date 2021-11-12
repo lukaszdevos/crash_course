@@ -66,3 +66,18 @@ class UserLoginTest(TestCase):
     def _given_user_login_page(self):
         url = "/users/login/"
         self.given_get_response_endpoint(url)
+
+    def test_user_activate_when_token_is_invalid(self):
+        self._given_user_has_been_created()
+        self._given_user_token()
+
+        self._change_token_date()
+        self._given_login_page_with_invalid_token()
+
+        expected_message = "Token verification is invalid."
+        self.assertEqual(self.response.json()["message"], expected_message)
+
+    def _given_login_page_with_invalid_token(self):
+        invalid_token = "this is invalid token"
+        url = "/users/login/" + "?token=" + invalid_token
+        self.given_get_response_endpoint(url)
