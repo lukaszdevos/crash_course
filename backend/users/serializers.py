@@ -1,6 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from users.models import User, UserToken
+from users.models import Activationtoken, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,5 +24,5 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def _create_user_token(self, user):
-        user_token = UserToken.objects.create(user=user)
+        user_token = Activationtoken.objects.create(user=user)
         print(user_token.token)  # TODO delete after CC-408
