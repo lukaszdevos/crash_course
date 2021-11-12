@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from users.models import TokenException, Activationtoken
+from users.models import Activationtoken, TokenException
 from users.serializers import UserSerializer
 
 

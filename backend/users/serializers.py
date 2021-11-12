@@ -1,6 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from users.models import User, Activationtoken
+from users.models import Activationtoken, User
 
 
 class UserSerializer(serializers.ModelSerializer):

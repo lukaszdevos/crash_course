@@ -1,6 +1,6 @@
 import factory
 from factory.fuzzy import FuzzyText
-from users.models import User, Activationtoken
+from users.models import Activationtoken, User
 
 
 class UserDictFactory(factory.DictFactory):
