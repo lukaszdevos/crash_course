@@ -10,8 +10,7 @@ class UserCreateView(CreateAPIView):
 
 class UserActivateView(CreateAPIView):
     def post(self, request, *args, **kwargs):
-        token = request.GET.get("token")
-        if token:
+        if token := request.GET.get("token"):
             try:
                 UserToken.objects.activate(token=token)
                 return Response({"message": "Account confirmed."})
