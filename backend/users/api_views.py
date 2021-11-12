@@ -1,6 +1,6 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from users.models import TokenError, UserToken
+from users.models import TokenException, UserToken
 from users.serializers import UserSerializer
 
 
@@ -14,6 +14,6 @@ class UserActivateView(CreateAPIView):
             try:
                 UserToken.objects.activate(token=token)
                 return Response({"message": "Account confirmed."})
-            except TokenError as e:
+            except TokenException as e:
                 return Response({"message": str(e)}, status=400)
         return Response({})
