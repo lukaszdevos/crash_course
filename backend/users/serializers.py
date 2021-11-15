@@ -1,10 +1,8 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import update_last_login
 from django.contrib.auth.password_validation import validate_password
+from users.models import ActivationToken, User
 from rest_framework import exceptions, serializers
-from rest_framework.settings import api_settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from users.models import Activationtoken, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def _create_user_token(self, user):
-        user_token = Activationtoken.objects.create(user=user)
+        user_token = ActivationToken.objects.create(user=user)
         print(user_token.token)  # TODO delete after CC-408
 
 
