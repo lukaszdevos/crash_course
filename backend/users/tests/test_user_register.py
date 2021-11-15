@@ -3,6 +3,7 @@ from unittest import TestCase
 import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
+from users.models import ActivationToken, User
 from users.tests.user_factories import UserDictFactory
 
 pytestmark = pytest.mark.django_db
@@ -53,3 +54,10 @@ class UserTest(TestCase):
 
         self.assertEqual(self.response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(self.response.json()["password"], expected_result)
+
+    def test_user_token_when_user_created(self):
+        self._given_user_has_been_created()
+
+        user = User.objects.get(email=self.response.json()["email"])
+
+        self.assertTrue(user.token.first())
