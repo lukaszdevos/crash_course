@@ -16,6 +16,8 @@ SENDGRID_API_KEY=
 FROM_EMAIL=
 SENDGRID_SANDBOX_MODE_IN_DEBUG=set False if you need test in debug mode
 
+FRONTEND_URL=
+
 ```
 ### Run project
 :whale: :whale2: :whale:

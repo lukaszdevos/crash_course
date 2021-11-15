@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.urls import reverse
 
+from crashcourse.settings import FRONTEND_URL
 from users.models import ActivationToken, User
 from handlers import send_registration_confirmation_mail
 from rest_framework import exceptions, serializers
@@ -38,7 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def _get_activation_url(self, user_token):
         token = user_token.token
-        return reverse("users:activate") + "?token=" + token
+        return FRONTEND_URL + '/login/?token=' + token
 
 
 class UserLoginSerializer(TokenObtainPairSerializer):
