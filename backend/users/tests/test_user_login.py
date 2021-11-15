@@ -3,7 +3,6 @@ from unittest import TestCase
 import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
-
 from users.models import User
 from users.tests.user_factories import UserDictFactory
 
@@ -30,7 +29,7 @@ class UserLoginTest(TestCase):
 
         self._then_user_log_in_with_invalid_data()
 
-        expected_result = {'detail': 'Invalid username or password'}
+        expected_result = {"detail": "Invalid username or password"}
         self.assertEqual(self.response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(self.response.json(), expected_result)
 

@@ -1,10 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers, exceptions
+from rest_framework import exceptions, serializers
 from rest_framework.settings import api_settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
 from users.models import Activationtoken, User
 
 
@@ -41,7 +40,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
     def _validate_login(self, attrs):
         authenticate_kwargs = {
             self.username_field: attrs[self.username_field],
-            'password': attrs['password'],
+            "password": attrs["password"],
         }
         self.user = authenticate(**authenticate_kwargs)
         if self.user is None:

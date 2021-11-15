@@ -4,9 +4,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from users.models import Activationtoken, TokenException
-from users.serializers import UserSerializer, UserLoginSerializer
+from users.serializers import UserLoginSerializer, UserSerializer
 
 
 class UserCreateView(CreateAPIView):
