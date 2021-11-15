@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from users.models import ActivationToken, User
 from handlers import send_registration_confirmation_mail
 from rest_framework import exceptions, serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from users.models import ActivationToken, User
 
 
 class UserSerializer(serializers.ModelSerializer):
