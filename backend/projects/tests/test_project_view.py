@@ -40,5 +40,5 @@ class TestProject(TestCase):
 
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.response.json()["name"], self.data["name"])
-        self.assertEqual(self.response.json(), self.data["name"])
+        self.assertEqual(self.response.json()["member"], [])
 
