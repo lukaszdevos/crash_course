@@ -22,9 +22,7 @@ class UserTokenManager(models.Manager):
             raise TokenException("Token verification is invalid.")
         if not user_token.is_valid_token():
             raise TokenException("Token verification expired.")
-        user = user_token.user
-        user.is_active = True
-        user.save()
+        User.objects.filter(id=user_token.user.id).update(is_active=True)
 
 
 class Activationtoken(models.Model):
