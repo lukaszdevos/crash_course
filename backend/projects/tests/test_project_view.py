@@ -1,10 +1,9 @@
 from unittest import TestCase
 
 import pytest
+from projects.project_factory import ProjectDictFactory
 from rest_framework import status
 from rest_framework.test import APIClient
-
-from projects.project_factory import ProjectDictFactory
 from users.tests.user_factories import UserFactory
 
 pytestmark = pytest.mark.django_db
@@ -70,4 +69,3 @@ class TestProject(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.response.json()["name"], self.data[0]["name"])
         self.assertEqual(self.response.json()["member"], [])
-

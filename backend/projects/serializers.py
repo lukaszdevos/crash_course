@@ -8,8 +8,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ["name", "member"]
 
     def create(self, validated_data):
-        user = self.context['request'].user
+        user = self.context["request"].user
         validated_data["created_by_id"] = user.id
         return super().create(validated_data)
-
-
