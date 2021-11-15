@@ -34,10 +34,16 @@ class TestProject(TestCase):
         return user
 
     def test_project_create(self, **kwargs):
+        self._given_project_has_been_created(kwargs)
+
+        self._then_project_will_be_created()
+
+    def _given_project_has_been_created(self, kwargs):
         self.data = ProjectDictFactory.build(**kwargs)
         url = "/projects/"
-        self.given_post_response_endpoint(url, self.data )
+        self.given_post_response_endpoint(url, self.data)
 
+    def _then_project_will_be_created(self):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.response.json()["name"], self.data["name"])
         self.assertEqual(self.response.json()["member"], [])
