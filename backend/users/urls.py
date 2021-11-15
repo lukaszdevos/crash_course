@@ -9,6 +9,6 @@ app_name = "users"
 urlpatterns = [
     path("register/", api_views.UserCreateView.as_view(), name="register"),
     path("activate/", api_views.UserActivateView.as_view(), name="activate"),
-    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
