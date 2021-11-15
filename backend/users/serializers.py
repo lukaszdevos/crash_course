@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+from users.models import ActivationToken, User
 from handlers import send_registration_confirmation_mail
 from rest_framework import exceptions, serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from users.models import Activationtoken, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def _create_user_token(self, user):
-        return Activationtoken.objects.create(user=user)
+        return ActivationToken.objects.create(user=user)
 
     def _send_activation_mail(self, user, user_token):
         url_token = self._get_activation_url(user_token)

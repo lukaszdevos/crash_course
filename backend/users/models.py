@@ -17,25 +17,23 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "email"
 
 
-class UserTokenManager(models.Manager):
+class ActivationTokenManager(models.Manager):
     def activate(self, token):
         user_token = super().get_queryset().filter(token=token).first()
         if not user_token:
             raise TokenException("Token verification is invalid.")
         if not user_token.is_valid_token():
             raise TokenException("Token verification expired.")
-        user = user_token.user
-        user.is_active = True
-        user.save()
+        User.objects.filter(id=user_token.user.id).update(is_active=True)
 
 
-class Activationtoken(models.Model):
+class ActivationToken(models.Model):
     HOURS_TO_EXPIRED = 24
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="token")
     token = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
-    objects = UserTokenManager()
+    objects = ActivationTokenManager()
 
     def save(self, *args, **kwargs):
         self.token = secrets.token_urlsafe()
