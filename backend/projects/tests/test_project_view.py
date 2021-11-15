@@ -33,13 +33,13 @@ class TestProject(TestCase):
         user.save()
         return user
 
-    def test_project_create(self, **kwargs):
-        self._given_project_has_been_created(kwargs)
+    def test_project_create(self):
+        self._given_project_has_been_created()
 
         self._then_project_will_be_created()
 
-    def _given_project_has_been_created(self, kwargs):
-        self.data = ProjectDictFactory.build(**kwargs)
+    def _given_project_has_been_created(self):
+        self.data = ProjectDictFactory.build()
         url = "/projects/"
         self.given_post_response_endpoint(url, self.data)
 
