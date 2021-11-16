@@ -21,12 +21,6 @@ class TestProject(TestCase):
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)
 
-    # def given_update_response_endpoint(self, url, data):
-    #     self.response = self.client.patch(url, data)
-    #
-    # def given_delete_response_endpoint(self, url):
-    #     self.response = self.client.delete(url)
-
     def given_created_user(self):
         user = UserFactory(is_active=True)
         user.save()
@@ -46,12 +40,19 @@ class TestProject(TestCase):
 
         self.assertEqual(len(self.response.json()), number_project)
 
-    def _given_project_created_by_another_user(self):
+    def test_user_project_list_view_when_user_is_member(self):
+        self._given_project_created_by_another_user(member=[self.user.id])
+
+        self._given_user_projects_list()
+
+        self.assertEqual(len(self.response.json()), 1)
+
+    def _given_project_created_by_another_user(self, **kwargs):
         another_user = UserFactory(is_active=True)
         another_user.save()
         another_user_client = APIClient()
         another_user_client.force_authenticate(user=another_user)
-        another_user_project = ProjectDictFactory.build()
+        another_user_project = ProjectDictFactory.build(**kwargs)
         url = "/projects/"
         self.response = another_user_client.post(url, another_user_project)
 
@@ -69,5 +70,3 @@ class TestProject(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.response.json()["name"], self.data[0]["name"])
         self.assertEqual(self.response.json()["member"], [])
-
-#todo test for project list with members connection
