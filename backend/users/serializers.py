@@ -53,3 +53,9 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         self.user = authenticate(**authenticate_kwargs)
         if self.user is None:
             raise exceptions.AuthenticationFailed("Invalid username or password")
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "display_name"]

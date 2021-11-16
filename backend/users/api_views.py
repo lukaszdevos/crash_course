@@ -1,11 +1,13 @@
-from rest_framework import status
+from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, filters
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from users.models import ActivationToken, TokenException
-from users.serializers import UserLoginSerializer, UserSerializer
+from users.models import ActivationToken, TokenException, User
+from users.serializers import UserLoginSerializer, UserSerializer, MemberSerializer
 
 
 class UserCreateView(CreateAPIView):
@@ -31,5 +33,12 @@ class UserLoginView(TokenObtainPairView):
     serializer_class = UserLoginSerializer
 
 
-class UserListView(ListAPIView):
-    pass
+class MembersListView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = MemberSerializer
+
+    def get_queryset(self):
+        keyword = self.kwargs["keyword"]
+        return self.queryset.filter(
+            Q(email__contains=keyword) | Q(display_name__contains=keyword)
+        )[:6]
