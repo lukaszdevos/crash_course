@@ -64,6 +64,9 @@ class TestProject(TestCase):
         self.assertEqual(
             self.response.json()["name"], self.another_user_project["name"]
         )
+        self.assertTrue(self.response.json()["created_by"])
+        self.assertTrue(self.response.json()["created_at"])
+        self.assertTrue(self.response.json()["member"])
 
     def test_user_project_detail_view_when_user_is_not_member(self):
         self._given_project_created_by_another_user()

@@ -1,6 +1,7 @@
 from django.db.models import Q
 from projects.models import Project
-from projects.serializers import ProjectSerializer
+from projects.serializers import (ProjectBasicSerializer,
+                                  ProjectExtendSerializer)
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
@@ -13,10 +14,15 @@ class ProjectViewSet(
     GenericViewSet,
 ):
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectBasicSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(
             Q(created_by=self.request.user) | Q(member=self.request.user.id)
         )
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return ProjectExtendSerializer
+        return self.serializer_class
