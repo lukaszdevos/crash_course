@@ -2,6 +2,7 @@ import datetime
 import secrets
 
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import UserManager
 from django.db import models
 from django.utils import timezone
 from exceptions import TokenException
@@ -12,6 +13,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     display_name = models.CharField(null=True, blank=True, max_length=128)
 
+    objects = UserManager()
     USERNAME_FIELD = "email"
 
 
