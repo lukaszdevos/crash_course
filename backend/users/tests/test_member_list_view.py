@@ -48,12 +48,13 @@ class MemberListView(TestCase):
         expected_users = 6
         self.assertEqual(len(self.response.json()), expected_users)
 
-
     def _then_users_will_be_displayed(self, keyword):
         self._given_user_list(keyword)
         self.assertEqual(self.response.json()[0]["id"], self.user.id)
         self.assertEqual(self.response.json()[0]["email"], self.user.email)
-        self.assertEqual(self.response.json()[0]["display_name"], self.user.display_name)
+        self.assertEqual(
+            self.response.json()[0]["display_name"], self.user.display_name
+        )
 
     def _given_user_list(self, keyword):
         url = f"/users/search/{keyword}/"

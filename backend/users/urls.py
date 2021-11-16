@@ -10,5 +10,7 @@ urlpatterns = [
     path("activate/", api_views.UserActivateView.as_view(), name="activate"),
     path("login/", api_views.UserLoginView.as_view(), name="token_obtain_pair"),
     path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("search/<keyword>/", api_views.MembersListView.as_view(), name="search_members")
+    path(
+        "search/<keyword>/", api_views.MembersListView.as_view(), name="search_members"
+    ),
 ]
