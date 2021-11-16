@@ -1,16 +1,16 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from users.models import ActivationToken, TokenException
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from users.models import ActivationToken, TokenException
 from users.serializers import UserLoginSerializer, UserSerializer
 
 
 class UserCreateView(CreateAPIView):
-    permission_classes = [AllowAny]
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
 
 class UserActivateView(APIView):
@@ -27,5 +27,5 @@ class UserActivateView(APIView):
 
 
 class UserLoginView(TokenObtainPairView):
-    permission_classes = [AllowAny]
     serializer_class = UserLoginSerializer
+    permission_classes = [AllowAny]

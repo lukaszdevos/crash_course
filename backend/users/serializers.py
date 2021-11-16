@@ -1,12 +1,11 @@
+from crashcourse.settings import FRONTEND_URL
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from django.urls import reverse
-
-from crashcourse.settings import FRONTEND_URL
-from users.models import ActivationToken, User
+from django.utils.translation import gettext_lazy as _
 from handlers import send_registration_confirmation_mail
-from rest_framework import exceptions, serializers
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from users.models import ActivationToken, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -39,19 +38,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def _get_activation_url(self, user_token):
         token = user_token.token
-        return FRONTEND_URL + '/login/?token=' + token
+        return FRONTEND_URL + "/login/?token=" + token
 
 
 class UserLoginSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        self._validate_login(attrs)
-        return super().validate(attrs)
-
-    def _validate_login(self, attrs):
-        authenticate_kwargs = {
-            self.username_field: attrs[self.username_field],
-            "password": attrs["password"],
-        }
-        self.user = authenticate(**authenticate_kwargs)
-        if self.user is None:
-            raise exceptions.AuthenticationFailed("Invalid username or password")
+    default_error_messages = {"no_active_account": _("Invalid username or password")}
