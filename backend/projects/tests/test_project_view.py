@@ -69,3 +69,5 @@ class TestProject(TestCase):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.response.json()["name"], self.data[0]["name"])
         self.assertEqual(self.response.json()["member"], [])
+
+#todo test for project list with members connection
