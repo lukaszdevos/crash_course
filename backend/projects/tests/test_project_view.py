@@ -45,7 +45,16 @@ class TestProject(TestCase):
 
         self._given_user_projects_list()
 
-        self.assertEqual(len(self.response.json()), 1)
+        user_belong_to_project = 1
+        self.assertEqual(len(self.response.json()), user_belong_to_project)
+
+    def test_user_project_list_view_when_user_is_not_member(self):
+        self._given_project_created_by_another_user()
+
+        self._given_user_projects_list()
+
+        user_belong_to_project = 0
+        self.assertEqual(len(self.response.json()), user_belong_to_project)
 
     def _given_project_created_by_another_user(self, **kwargs):
         another_user = UserFactory(is_active=True)
