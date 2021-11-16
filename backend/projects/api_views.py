@@ -1,11 +1,17 @@
 from django.db.models import Q
 from projects.models import Project
 from projects.serializers import ProjectSerializer
+from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import GenericViewSet
 
 
-class ProjectViewSet(ModelViewSet):
+class ProjectViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]

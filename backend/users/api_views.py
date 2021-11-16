@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -29,3 +29,7 @@ class UserActivateView(APIView):
 class UserLoginView(TokenObtainPairView):
     permission_classes = [AllowAny]
     serializer_class = UserLoginSerializer
+
+
+class UserListView(ListAPIView):
+    pass
