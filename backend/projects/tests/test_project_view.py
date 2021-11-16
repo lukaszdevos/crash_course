@@ -56,17 +56,37 @@ class TestProject(TestCase):
         user_belong_to_project = 0
         self.assertEqual(len(self.response.json()), user_belong_to_project)
 
+    def test_user_project_detail_view_when_user_is_member(self):
+        self._given_project_created_by_another_user(member=[self.user.id])
+
+        self._given_user_projects_detail()
+
+        self.assertEqual(self.response.json()["name"], self.another_user_project["name"])
+
+    def test_user_project_detail_view_when_user_is_not_member(self):
+        self._given_project_created_by_another_user()
+
+        self._given_user_projects_detail()
+
+        expected = {"detail": "Not found."}
+        self.assertEqual(self.response.json(), expected)
+
     def _given_project_created_by_another_user(self, **kwargs):
-        another_user = UserFactory(is_active=True)
-        another_user.save()
+        self.another_user = UserFactory(is_active=True)
+        self.another_user.save()
         another_user_client = APIClient()
-        another_user_client.force_authenticate(user=another_user)
-        another_user_project = ProjectDictFactory.build(**kwargs)
+        another_user_client.force_authenticate(user=self.another_user)
+        self.another_user_project = ProjectDictFactory.build(**kwargs)
         url = "/projects/"
-        self.response = another_user_client.post(url, another_user_project)
+        self.response = another_user_client.post(url, self.another_user_project)
 
     def _given_user_projects_list(self):
         url = "/projects/"
+        self.given_get_response_endpoint(url)
+
+    def _given_user_projects_detail(self):
+        id = self.another_user.created_by.first().id
+        url = f"/projects/{id}/".format(id)
         self.given_get_response_endpoint(url)
 
     def _given_project_has_been_created(self, number=1):
