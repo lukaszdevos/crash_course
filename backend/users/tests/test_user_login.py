@@ -4,7 +4,7 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from users.models import User
-from users.tests.user_factories import UserDictFactory
+from users.tests.user_factories import UserDictFactory, UserFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -12,21 +12,17 @@ pytestmark = pytest.mark.django_db
 class UserLoginTest(TestCase):
     def setUp(self):
         self.client = APIClient()
+        self.data_login = {"email": "test@gmail.com", "password": "password_secret"}
+        self._given_user_has_been_created(**self.data_login)
 
     def test_user_login(self):
-        data_login = {"email": "test@gmail.com", "password": "password_secret"}
-        self._given_user_has_been_created(**data_login)
-
-        self._then_user_log_in(data_login)
+        self._then_user_log_in(self.data_login)
 
         self.assertEqual(self.response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.response.json()["refresh"])
         self.assertTrue(self.response.json()["access"])
 
     def test_user_login_with_incorrect_password(self):
-        data_login = {"email": "test@gmail.com", "password": "password_secret"}
-        self._given_user_has_been_created(**data_login)
-
         self._then_user_log_in_with_invalid_data()
 
         expected_result = {"detail": "Invalid username or password"}
@@ -46,11 +42,9 @@ class UserLoginTest(TestCase):
         self.user.save()
 
     def _given_user_has_been_created(self, **kwargs):
-        self.data = UserDictFactory.build(**kwargs)
-        url = "/users/register/"
-        self.given_post_response_endpoint(url, self.data)
+        self.user = UserFactory.build(is_active=True, **kwargs)
+        self.user.save()
         self.user = User.objects.get(email=self.response.json()["email"])
-        self._given_activate_user_account()
 
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)

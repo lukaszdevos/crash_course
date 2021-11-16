@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from users.models import ActivationToken, User
+from django.utils.translation import gettext_lazy as _
 from rest_framework import exceptions, serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.utils.translation import gettext_lazy as _
+from users.models import ActivationToken, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,6 +32,4 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(TokenObtainPairSerializer):
-    default_error_messages = {
-        'no_active_account': _('Invalid username or password')
-    }
+    default_error_messages = {"no_active_account": _("Invalid username or password")}
