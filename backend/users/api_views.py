@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from users.models import ActivationToken, TokenException
 from rest_framework.views import APIView
@@ -9,9 +10,12 @@ from users.serializers import UserLoginSerializer, UserSerializer
 
 class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
 
 class UserActivateView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         if token := request.GET.get("token"):
             try:
@@ -24,4 +28,5 @@ class UserActivateView(APIView):
 
 class UserLoginView(TokenObtainPairView):
     serializer_class = UserLoginSerializer
+    permission_classes = [AllowAny]
 
