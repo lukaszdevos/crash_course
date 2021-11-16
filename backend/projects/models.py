@@ -30,7 +30,8 @@ class Task(models.Model):
     member = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True)
     due_date = models.DateTimeField(blank=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.DO_NOTHING, related_name="created_by"
+        User, on_delete=models.DO_NOTHING, related_name="created_task_by"
     )
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     edited_at = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="task")
