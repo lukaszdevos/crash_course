@@ -1,5 +1,4 @@
 from django.db.models import Q
-
 from projects.models import Project
 from projects.serializers import ProjectSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -13,6 +12,5 @@ class ProjectViewSet(ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(
-            Q(created_by=self.request.user) |
-            Q(member=self.request.user.id)
+            Q(created_by=self.request.user) | Q(member=self.request.user.id)
         )
