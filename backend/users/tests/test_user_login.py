@@ -21,6 +21,7 @@ class UserLoginTest(TestCase):
 
         self.assertEqual(self.response.status_code, status.HTTP_200_OK)
         self.assertTrue(self.response.json()["refresh"])
+        self.assertTrue(self.response.json()["access"])
 
     def test_user_login_with_incorrect_password(self):
         data_login = {"email": "test@gmail.com", "password": "password_secret"}
