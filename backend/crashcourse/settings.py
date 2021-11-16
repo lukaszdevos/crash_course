@@ -117,6 +117,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
 SIMPLE_JWT = {
@@ -130,6 +133,8 @@ EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 SENDGRID_SANDBOX_MODE_IN_DEBUG = os.getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG")
 FROM_EMAIL = os.getenv("FROM_EMAIL")
+
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

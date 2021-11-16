@@ -1,5 +1,4 @@
 from django.db.models import Q
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -12,8 +11,8 @@ from users.serializers import (MemberSerializer, UserLoginSerializer,
 
 
 class UserCreateView(CreateAPIView):
-    permission_classes = [AllowAny]
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
 
 class UserActivateView(APIView):
@@ -30,8 +29,8 @@ class UserActivateView(APIView):
 
 
 class UserLoginView(TokenObtainPairView):
-    permission_classes = [AllowAny]
     serializer_class = UserLoginSerializer
+    permission_classes = [AllowAny]
 
 
 class MembersListView(ListAPIView):
