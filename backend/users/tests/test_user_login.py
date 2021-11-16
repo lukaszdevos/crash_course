@@ -16,7 +16,6 @@ class UserLoginTest(TestCase):
     def test_user_login(self):
         data_login = {"email": "test@gmail.com", "password": "password_secret"}
         self._given_user_has_been_created(**data_login)
-        self._given_activate_user_account()
 
         self._then_user_log_in(data_login)
 
@@ -26,7 +25,6 @@ class UserLoginTest(TestCase):
     def test_user_login_with_incorrect_password(self):
         data_login = {"email": "test@gmail.com", "password": "password_secret"}
         self._given_user_has_been_created(**data_login)
-        self._given_activate_user_account()
 
         self._then_user_log_in_with_invalid_data()
 
@@ -43,15 +41,15 @@ class UserLoginTest(TestCase):
         self.given_post_response_endpoint(url, data_login)
 
     def _given_activate_user_account(self):
-        self.user_token = self.user.token.first()
-        url = "/users/activate/" + "?token=" + self.user_token.token
-        self.given_post_response_endpoint_with_empty_data(url)
+        self.user.is_active = True
+        self.user.save()
 
     def _given_user_has_been_created(self, **kwargs):
         self.data = UserDictFactory.build(**kwargs)
         url = "/users/register/"
         self.given_post_response_endpoint(url, self.data)
         self.user = User.objects.get(email=self.response.json()["email"])
+        self._given_activate_user_account()
 
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)
