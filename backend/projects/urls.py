@@ -31,4 +31,5 @@ urlpatterns = [
     path("", project_list, name="project-list"),
     path("<int:pk>/", project_detail, name="project-detail"),
     path("<int:pk>/tasks/", task_list, name="task-list"),
+    path("<int:pk>/tasks/<int:task_pk>", task_list, name="task-detail"),
 ]

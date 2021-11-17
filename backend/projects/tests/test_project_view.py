@@ -79,7 +79,7 @@ class TestProject(TestCase):
         expected = {"detail": "Not found."}
         self.assertEqual(self.response.json(), expected)
 
-    def test_user_project_detail_view_when_user_is_member(self):
+    def test_user_project_update_view(self):
         self._given_project_has_been_created()
         project_id = self.response.json()["id"]
         data = {"name": "new_name"}

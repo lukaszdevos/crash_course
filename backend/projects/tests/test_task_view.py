@@ -54,10 +54,6 @@ class TestTask(TestCase):
 
         self.assertEqual(len(self.response.json()), number_project)
 
-    def _given_project_tasks_list(self):
-        url = f"/projects/{self.project.id}/tasks/"
-        self.given_get_response_endpoint(url)
-
     def test_task_list_not_belong_to_project(self):
         project_id = self.project.id
         self._given_task_has_been_created_related_to_another_project()
@@ -67,6 +63,22 @@ class TestTask(TestCase):
 
         expected_num_project = 0
         self.assertEqual(len(self.response.json()), expected_num_project)
+
+    def test_task_update_view(self):
+        self._given_task_has_been_created()
+        task_id = self.response.json()["id"]
+        data = {"title": "new_title"}
+
+        url = f"/projects/{self.project.id}/tasks/{task_id}/"
+        self.given_update_response_endpoint(url, data)
+
+        self.assertEqual(self.response.json()["title"], data["title"])
+        # self.assertEqual(self.response.json()["description"], data["description"])
+
+
+    def _given_project_tasks_list(self):
+        url = f"/projects/{self.project.id}/tasks/"
+        self.given_get_response_endpoint(url)
 
     def _given_task_has_been_created_related_to_another_project(self):
         another_project = ProjectFactory(created_by=self.user)
