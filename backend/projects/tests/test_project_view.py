@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import pytest
-from projects.project_factory import ProjectDictFactory
+from projects.project_factories import ProjectDictFactory
 from rest_framework import status
 from rest_framework.test import APIClient
 from users.tests.user_factories import UserFactory

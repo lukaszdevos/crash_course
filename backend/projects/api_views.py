@@ -1,9 +1,10 @@
 from django.db.models import Q
-from projects.models import Project
+
+from projects.models import Project, Task
 from projects.serializers import (ProjectBasicSerializer,
-                                  ProjectExtendSerializer)
+                                  ProjectExtendSerializer, TaskSerializer)
 from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 
 class ProjectViewSet(
@@ -25,3 +26,12 @@ class ProjectViewSet(
         if self.action == "retrieve":
             return ProjectExtendSerializer
         return self.serializer_class
+
+
+class TaskViewSet(ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+    def get_queryset(self):
+        project_id = self.kwargs["pk"]
+        return self.queryset.filter(project=project_id)
