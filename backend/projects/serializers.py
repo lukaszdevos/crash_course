@@ -29,3 +29,8 @@ class TaskSerializer(serializers.ModelSerializer):
         validated_data["created_by_id"] = user.id
         validated_data["project_id"] = project_id
         return super().create(validated_data)
+
+
+class TaskExtendSerializer(TaskSerializer):
+    class Meta(TaskSerializer.Meta):
+        fields = "__all__"

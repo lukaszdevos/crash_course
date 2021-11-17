@@ -74,6 +74,26 @@ class TestTask(TestCase):
         self.assertEqual(self.response.json()["title"], data["title"])
         self.assertEqual(self.response.json()["description"], data["description"])
 
+    def test_task_detail_view(self):
+        self._given_task_has_been_created()
+        task_id = self.response.json()["id"]
+
+        url = f"/projects/{self.project.id}/tasks/{task_id}/"
+        self.given_get_response_endpoint(url)
+
+        self._then_task_detail_with_extra_info_will_be_created()
+
+    def _then_task_detail_with_extra_info_will_be_created(self):
+        self.assertEqual(self.response.json()["title"], self.data[0]["title"])
+        self.assertEqual(
+            self.response.json()["description"], self.data[0]["description"]
+        )
+        self.assertEqual(self.response.json()["status"], self.data[0]["status"])
+        self.assertEqual(self.response.json()["project"], self.project.id)
+        self.assertEqual(self.response.json()["created_by"], self.user.id)
+        self.assertTrue(self.response.json()["created_at"])
+        self.assertTrue(self.response.json()["edited_at"])
+
     def _given_updated_project(self, data, task_id):
         url = f"/projects/{self.project.id}/tasks/{task_id}/"
         self.given_update_response_endpoint(url, data)
