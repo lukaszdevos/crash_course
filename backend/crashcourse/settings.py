@@ -15,6 +15,9 @@ from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from celery.schedules import crontab
+import tasks
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -135,6 +138,16 @@ SENDGRID_SANDBOX_MODE_IN_DEBUG = os.getenv("SENDGRID_SANDBOX_MODE_IN_DEBUG")
 FROM_EMAIL = os.getenv("FROM_EMAIL")
 
 FRONTEND_URL = os.getenv("FRONTEND_URL")
+
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "tasks.sample_task",
+        "schedule": crontab(minute="*/1"),
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
