@@ -1,5 +1,4 @@
 from django.db.models import Q
-
 from projects.models import Project, Task
 from projects.serializers import (ProjectBasicSerializer,
                                   ProjectExtendSerializer, TaskSerializer)

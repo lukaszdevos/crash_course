@@ -1,6 +1,5 @@
 import factory
-from factory.fuzzy import FuzzyText, FuzzyChoice
-
+from factory.fuzzy import FuzzyChoice, FuzzyText
 from projects.models import Project, Task
 
 

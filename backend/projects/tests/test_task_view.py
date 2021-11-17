@@ -1,7 +1,8 @@
 from unittest import TestCase
 
 import pytest
-from projects.project_factories import ProjectDictFactory, ProjectFactory, TaskDictFactory
+from projects.project_factories import (ProjectDictFactory, ProjectFactory,
+                                        TaskDictFactory)
 from rest_framework import status
 from rest_framework.test import APIClient
 from users.tests.user_factories import UserFactory
@@ -82,7 +83,7 @@ class TestTask(TestCase):
     def _then_task_will_be_created(self):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(self.response.json()["title"], self.data[0]["title"])
-        self.assertEqual(self.response.json()["description"], self.data[0]["description"])
+        self.assertEqual(
+            self.response.json()["description"], self.data[0]["description"]
+        )
         self.assertEqual(self.response.json()["status"], self.data[0]["status"])
-
-

@@ -27,7 +27,9 @@ class Task(models.Model):
     title = models.CharField(max_length=128, blank=False)
     description = models.TextField(validators=[MaxLengthValidator(10000)])
     status = models.CharField(max_length=32, choices=STATUS_CHOICES)
-    member = models.OneToOneField(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    member = models.OneToOneField(
+        User, on_delete=models.DO_NOTHING, blank=True, null=True
+    )
     due_date = models.DateTimeField(blank=True, null=True)
     created_by = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, related_name="created_task_by"

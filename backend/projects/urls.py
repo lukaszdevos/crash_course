@@ -1,11 +1,9 @@
 from django.urls import path
 from projects import api_views
 
-
 METHOD_LIST = {
     "get": "list",
     "post": "create",
-
 }
 
 METHOD_DETIAL = {
@@ -32,5 +30,5 @@ app_name = "projects"
 urlpatterns = [
     path("", project_list, name="project-list"),
     path("<int:pk>/", project_detail, name="project-detail"),
-    path("<int:pk>/tasks/", task_list, name="task-list")
+    path("<int:pk>/tasks/", task_list, name="task-list"),
 ]
