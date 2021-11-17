@@ -2,18 +2,21 @@ from datetime import datetime
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
+from crashcourse.settings import FRONTEND_URL
 from django.utils import timezone
+from handlers import send_task_notifiaction_mail
 from projects.models import Task
 
 logger = get_task_logger(__name__)
 
 
 @shared_task
-def sample_task():
-    logger.info("sample CELERY")
+def notifiaction_task():
     tasks = Task.objects.all()
     for task in tasks:
-        if task.due_date:
+        task_url = (
+            FRONTEND_URL + "/project/" + str(task.project.id) + "/tasks/" + str(task.id)
+        )
+        if task.due_date and task.status != Task.DONE:
             if task.due_date + datetime.timedelta(hours=1) > timezone.now():
-                # send mail
-                pass
+                send_task_notifiaction_mail(task.title, task_url, task.member.email)
