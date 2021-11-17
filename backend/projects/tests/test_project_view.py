@@ -18,6 +18,9 @@ class TestProject(TestCase):
     def given_get_response_endpoint(self, url):
         self.response = self.client.get(url)
 
+    def given_update_response_endpoint(self, url, data):
+        self.response = self.client.patch(url, data)
+
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)
 
@@ -75,6 +78,19 @@ class TestProject(TestCase):
 
         expected = {"detail": "Not found."}
         self.assertEqual(self.response.json(), expected)
+
+    def test_user_project_detail_view_when_user_is_member(self):
+        self._given_project_has_been_created()
+        project_id = self.response.json()["id"]
+        data = {"name": "new_name"}
+
+        self._given_updated_project(data, project_id)
+
+        self.assertEqual(self.response.json()["name"], data["name"])
+
+    def _given_updated_project(self, data, project_id):
+        url = f"/projects/{project_id}/"
+        self.given_update_response_endpoint(url, data)
 
     def _given_project_created_by_another_user(self, **kwargs):
         self.another_user = UserFactory(is_active=True)

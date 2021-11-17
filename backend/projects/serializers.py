@@ -5,7 +5,7 @@ from rest_framework import serializers
 class ProjectBasicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["name", "member"]
+        fields = ["id", "name", "member"]
 
     def create(self, validated_data):
         user = self.context["request"].user

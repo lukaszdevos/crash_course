@@ -3,11 +3,11 @@ from projects.models import Project
 from projects.serializers import (ProjectBasicSerializer,
                                   ProjectExtendSerializer)
 from rest_framework import mixins
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
 
 class ProjectViewSet(
+    mixins.UpdateModelMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
@@ -15,7 +15,6 @@ class ProjectViewSet(
 ):
     queryset = Project.objects.all()
     serializer_class = ProjectBasicSerializer
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(
