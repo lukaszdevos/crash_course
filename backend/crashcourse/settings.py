@@ -14,9 +14,9 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import tasks
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from celery.schedules import crontab
-import tasks
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
