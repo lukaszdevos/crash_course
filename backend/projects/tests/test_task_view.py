@@ -67,14 +67,16 @@ class TestTask(TestCase):
     def test_task_update_view(self):
         self._given_task_has_been_created()
         task_id = self.response.json()["id"]
-        data = {"title": "new_title"}
+        data = {"title": "new_title", "description": "new_description"}
 
-        url = f"/projects/{self.project.id}/tasks/{task_id}/"
-        self.given_update_response_endpoint(url, data)
+        self._given_updated_project(data, task_id)
 
         self.assertEqual(self.response.json()["title"], data["title"])
-        # self.assertEqual(self.response.json()["description"], data["description"])
+        self.assertEqual(self.response.json()["description"], data["description"])
 
+    def _given_updated_project(self, data, task_id):
+        url = f"/projects/{self.project.id}/tasks/{task_id}/"
+        self.given_update_response_endpoint(url, data)
 
     def _given_project_tasks_list(self):
         url = f"/projects/{self.project.id}/tasks/"

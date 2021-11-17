@@ -10,26 +10,18 @@ METHOD_DETIAL = {
     "get": "retrieve",
     "put": "update",
     "patch": "partial_update",
-    # "delete": "destroy",
-}
-
-METHOD_DETIAL_WITH_DELETE = {
-    "get": "retrieve",
-    "put": "update",
-    "patch": "partial_update",
-    "delete": "destroy",
 }
 
 project_list = api_views.ProjectViewSet.as_view(METHOD_LIST)
 project_detail = api_views.ProjectViewSet.as_view(METHOD_DETIAL)
 task_list = api_views.TaskViewSet.as_view(METHOD_LIST)
-task_detail = api_views.TaskViewSet.as_view(METHOD_DETIAL_WITH_DELETE)
+task_detail = api_views.TaskViewSet.as_view(METHOD_DETIAL)
 
 app_name = "projects"
 
 urlpatterns = [
     path("", project_list, name="project-list"),
     path("<int:pk>/", project_detail, name="project-detail"),
-    path("<int:pk>/tasks/", task_list, name="task-list"),
-    path("<int:pk>/tasks/<int:task_pk>", task_list, name="task-detail"),
+    path("<int:project_pk>/tasks/", task_list, name="task-list"),
+    path("<int:project_pk>/tasks/<int:pk>/", task_detail, name="task-detail"),
 ]

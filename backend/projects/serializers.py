@@ -25,7 +25,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context["request"].user
-        project_id = self.context["view"].kwargs.get("pk")
+        project_id = self.context["view"].kwargs.get("project_pk")
         validated_data["created_by_id"] = user.id
         validated_data["project_id"] = project_id
         return super().create(validated_data)

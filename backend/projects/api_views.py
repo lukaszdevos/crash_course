@@ -27,10 +27,16 @@ class ProjectViewSet(
         return self.serializer_class
 
 
-class TaskViewSet(ModelViewSet):
+class TaskViewSet(
+    mixins.UpdateModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
     def get_queryset(self):
-        project_id = self.kwargs["pk"]
+        project_id = self.kwargs["project_pk"]
         return self.queryset.filter(project=project_id)
