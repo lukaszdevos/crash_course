@@ -33,3 +33,20 @@ services:
       - db
       - redis
       - backend
+  flower:
+    image: mher/flower
+    env_file:
+      - ./.env
+    ports:
+      - 8888:8888
+  celery-beat:
+    restart: always
+    build:
+      context: .
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+      - backend
+    command: "celery -A crashcourse beat -l INFO"

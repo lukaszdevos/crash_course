@@ -14,7 +14,6 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-import tasks
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from celery.schedules import crontab
 
@@ -144,7 +143,7 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 CELERY_BEAT_SCHEDULE = {
     "notifiaction_task": {
-        "task": "tasks.notifiaction_task",
+        "task": "projects.tasks.notifiaction_task",
         "schedule": crontab(minute="*/1"),
     },
 }
