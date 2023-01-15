@@ -1,5 +1,4 @@
 from crashcourse.settings import FRONTEND_URL
-from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from handlers import send_registration_confirmation_mail
@@ -43,3 +42,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(TokenObtainPairSerializer):
     default_error_messages = {"no_active_account": _("Invalid username or password")}
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "display_name"]
