@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from users.models import ActivationToken, TokenException, User
-from users.serializers import MemberSerializer, UserLoginSerializer, UserSerializer
+from users.serializers import (MemberSerializer, UserLoginSerializer,
+                               UserSerializer)
 
 
 class UserCreateView(CreateAPIView):

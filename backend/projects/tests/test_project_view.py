@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import pytest
-from projects.project_factory import ProjectDictFactory
+from projects.project_factories import ProjectDictFactory
 from rest_framework import status
 from rest_framework.test import APIClient
 from users.tests.user_factories import UserFactory
@@ -17,6 +17,9 @@ class TestProject(TestCase):
 
     def given_get_response_endpoint(self, url):
         self.response = self.client.get(url)
+
+    def given_update_response_endpoint(self, url, data):
+        self.response = self.client.patch(url, data)
 
     def given_post_response_endpoint(self, url, data):
         self.response = self.client.post(url, data)
@@ -64,6 +67,9 @@ class TestProject(TestCase):
         self.assertEqual(
             self.response.json()["name"], self.another_user_project["name"]
         )
+        self.assertTrue(self.response.json()["created_by"])
+        self.assertTrue(self.response.json()["created_at"])
+        self.assertTrue(self.response.json()["member"])
 
     def test_user_project_detail_view_when_user_is_not_member(self):
         self._given_project_created_by_another_user()
@@ -72,6 +78,19 @@ class TestProject(TestCase):
 
         expected = {"detail": "Not found."}
         self.assertEqual(self.response.json(), expected)
+
+    def test_user_project_update_view(self):
+        self._given_project_has_been_created()
+        project_id = self.response.json()["id"]
+        data = {"name": "new_name"}
+
+        self._given_updated_project(data, project_id)
+
+        self.assertEqual(self.response.json()["name"], data["name"])
+
+    def _given_updated_project(self, data, project_id):
+        url = f"/projects/{project_id}/"
+        self.given_update_response_endpoint(url, data)
 
     def _given_project_created_by_another_user(self, **kwargs):
         self.another_user = UserFactory(is_active=True)
